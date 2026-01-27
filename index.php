@@ -21,7 +21,8 @@
     </nav>
   </header>
   <main role="section principale">
-    <h1>Bienvenur sur BiblioApp</h1>
+    <h1>Bienvenue sur BiblioApp</h1>
+    <h2>Quel Livre recherchez-vous ?</h2>
     <section class="search" aria-label="formulaire de recherche de livre">
       <label for="searchInput">Recherche</label>
       <input type="text" name="searchinput" id="search" placeholder="titre, auteur, catégorie">
@@ -36,6 +37,10 @@
         <input type="radio" name="filter" id="filter" value="catégorie">
         <button type="submit" value="Filtrer" name="Filtrer">Filtrer</button>
       </div>
+    </section>
+    <section>
+      <h2>Catalogue</h2>
+      <div></div>
     </section>
   </main>
   <footer>
