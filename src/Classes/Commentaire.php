@@ -32,7 +32,7 @@ class Commentaire
     }
 
     // Récupérer les commentaires d'un livre
-    public function getByLivre(int $idLivre): array
+    public function getCommentByLivre(int $idLivre): array
     {
         $query = new \MongoDB\Driver\Query(['id_livre' => $idLivre]);
         $cursor = $this->manager->executeQuery($this->namespace, $query);

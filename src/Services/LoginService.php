@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Classes\Utilisateur;
@@ -6,7 +7,7 @@ use DateTimeImmutable;
 
 class LoginService
 {
-  private $pdo;
+  private \PDO $pdo;
 
   public function __construct($pdo)
   {
@@ -46,8 +47,11 @@ class LoginService
   // Déconnexion de l'utilisateur
   public function logout(): void
   {
+    if (session_status() === PHP_SESSION_NONE) {
+      session_start();
+    }
+    session_unset();
     session_destroy();
-    session_start(); 
   }
 
   // Créer une session utilisateur
@@ -76,8 +80,8 @@ class LoginService
   {
     if (session_status() === PHP_SESSION_NONE) {
       session_start();
-  }
-  return $_SESSION['id'] ?? null;
+    }
+    return $_SESSION['id'] ?? null;
   }
 
   //  Récupérer le pseudo de l'utilisateur connecté
@@ -102,13 +106,13 @@ class LoginService
   public function getCurrentUser(): ?Utilisateur
   {
     $userId = self::getCurrentUserId();
-    
+
     if (!$userId) {
       return null;
     }
 
     $userData = Utilisateur::findById($this->pdo, $userId);
-    
+
     if (!$userData) {
       return null;
     }
@@ -121,6 +125,6 @@ class LoginService
       $userData['PASSWORD'],
       new DateTimeImmutable($userData['DATE_INSCRIPTION'])
     );
-  }
 
+    }
 }

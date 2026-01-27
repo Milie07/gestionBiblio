@@ -11,7 +11,7 @@ class Livre
   private string $auteur;
   private Categorie $id_categorie;
   private string $disponibilite = "Disponible";
-  private $pdo;
+  private \PDO $pdo;
 
   public function __construct($pdo, int $id, string $titre, string $auteur, Categorie $id_categorie, string $disponibilite = "Disponible")
   {
@@ -66,8 +66,7 @@ class Livre
     return $stmt->execute([
       $this->titre,
       $this->auteur,
-      $this->id_categorie->getId(),
-      $this->disponibilite
+      $this->id_categorie->getId()
     ]);
   }
   public function deleteBook(): bool
@@ -86,6 +85,7 @@ class Livre
       $this->titre,
       $this->auteur,
       $this->disponibilite,
+      $this->id
     ]);
   }
   public function isAvailable(): bool

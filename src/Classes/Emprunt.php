@@ -14,7 +14,7 @@ class Emprunt
   private Utilisateur $id_utilisateur;
   private DateTimeImmutable $date_emprunt;
   private DateTimeImmutable $date_retour;
-  private $pdo;
+  private \PDO $pdo;
 
   public function __construct($pdo, int $id, Livre $id_livre, Utilisateur $id_utilisateur, DateTimeImmutable $date_emprunt, DateTimeImmutable $date_retour)
   {
@@ -50,13 +50,12 @@ class Emprunt
   // Emprunter un livre
   public function borrowBook()
   {
-    $sql = "INSERT INTO Emprunt (ID_LIVRE, ID_UTILISATEUR, DATE_EMPRUNT)
-            VALUES (?, ?, ?)";
+    $sql = "INSERT INTO Emprunt (ID_LIVRE, ID_UTILISATEUR)
+            VALUES (?, ?)";
     $stmt = $this->pdo->prepare($sql);
-    return $stmt->execute([
+    $result = $stmt->execute([
       $this->id_livre->getId(),
       $this->id_utilisateur->getId(),
-      $this->date_emprunt->format('Y-m-d')
     ]);
 
     if ($result) {
@@ -104,7 +103,7 @@ class Emprunt
   // Récupère tous les emprunts en cours
   public static function getActiveLoans($pdo): array
   {
-    $sql = "SELECT * FROM Emprunt WHERE DATE_RETOUR_REELLE IS NULL";
+    $sql = "SELECT * FROM Emprunt WHERE DATE_RETOUR IS NULL";
     $stmt = $pdo->query($sql);
     return $stmt->fetchAll();
   }

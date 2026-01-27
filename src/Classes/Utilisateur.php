@@ -11,7 +11,7 @@ class Utilisateur
   private string $email;
   private string $password;
   private DateTimeImmutable $date_inscription;
-  private $pdo;
+  private \PDO $pdo;
 
   public function __construct($pdo, int $id, string $pseudo, string $email, string $password, DateTimeImmutable $date_inscription)
   {
@@ -61,14 +61,13 @@ class Utilisateur
   public function registerUser(): bool
   {
     $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
-    $sql = "INSERT INTO Utilisateur (PSEUDO, EMAIL, PASSWORD, DATE_INSCRIPTION)
-            VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO Utilisateur (PSEUDO, EMAIL, PASSWORD)
+            VALUES (?, ?, ?)";
     $stmt = $this->pdo->prepare($sql);
     return $stmt->execute([
       $this->pseudo,
       $this->email,
-      $hashedPassword,
-      $this->date_inscription->format('Y-m-d H:i:s')
+      $hashedPassword
     ]);
   }
 
