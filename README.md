@@ -1,4 +1,4 @@
-# BIBLIOPP
+# BIBLIAPP
 
 Petit Projet d'étude pour la création, la connexion et l'utilisation de BDD SQL et NoSQL (architecture hybride).
 
@@ -7,7 +7,7 @@ Petit Projet d'étude pour la création, la connexion et l'utilisation de BDD SQ
 ## Fonctionnalités
 
 - Recherche de livres par titre, auteur et catégorie
-- Visualisation du catalogue de livre
+- Visualisation du catalogue de livres
 - Visualisation d'un détail de livre
 - Connexion / Déconnexion
 - Emprunt d'un livre par un utilisateur
@@ -104,8 +104,8 @@ mysql -u root -p < sql/data.sql
 # macOS
 brew services start mongodb-community
 
-# Windows (exécuter en tant qu'administrateur)
-net start MongoDB
+# Windows
+start MongoDB
 ```
 
 ### 5. Configuration
