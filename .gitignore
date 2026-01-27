@@ -7,6 +7,7 @@ node_modules
 #Environnement
 .DS_Store
 Thumbs.db
+.vscode
 
 #Docs divers
 logiqueMetier.txt
