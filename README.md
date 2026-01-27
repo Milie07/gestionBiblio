@@ -1,4 +1,4 @@
-# BIBLIAPP
+# BIBLIO_APP
 
 Petit Projet d'étude pour la création, la connexion et l'utilisation de BDD SQL et NoSQL (architecture hybride).
 
