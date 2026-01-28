@@ -9,34 +9,34 @@ use DateTimeImmutable;
 
 class Emprunt
 {
-  private int $id;
-  private Livre $id_livre;
-  private Utilisateur $id_utilisateur;
+  private int $id_emprunt;
+  private Livre $livre;
+  private Utilisateur $utilisateur;
   private DateTimeImmutable $date_emprunt;
   private DateTimeImmutable $date_retour;
   private \PDO $pdo;
 
-  public function __construct($pdo, int $id, Livre $id_livre, Utilisateur $id_utilisateur, DateTimeImmutable $date_emprunt, DateTimeImmutable $date_retour)
+  public function __construct($pdo, int $id_emprunt, Livre $livre, Utilisateur $utilisateur, DateTimeImmutable $date_emprunt, DateTimeImmutable $date_retour)
   {
-    $this->id = $id;
-    $this->id_livre = $id_livre;
-    $this->id_utilisateur = $id_utilisateur;
+    $this->id_emprunt = $id_emprunt;
+    $this->livre = $livre;
+    $this->utilisateur = $utilisateur;
     $this->date_emprunt = $date_emprunt;
     $this->date_retour = $date_retour;
     $this->pdo = $pdo;
   }
   // getters
-  public function getId(): int
+  public function getIdEmprunt(): int
   {
-    return $this->id;
+    return $this->id_emprunt;
   }
-  public function getIdLivre(): Livre
+  public function getLivre(): Livre
   {
-    return $this->id_livre;
+    return $this->livre;
   }
-  public function getIdUtilisateur(): Utilisateur
+  public function getUtilisateur(): Utilisateur
   {
-    return $this->id_utilisateur;
+    return $this->utilisateur;
   }
   public function getDateEmprunt(): DateTimeImmutable
   {
@@ -46,26 +46,26 @@ class Emprunt
   {
     return $this->date_retour;
   }
-
-  // Emprunter un livre
-  public function borrowBook()
+  // Méthode CRUD
+  // Créer un emprunt dans la BDD
+  public function create(): bool
   {
     $sql = "INSERT INTO Emprunt (ID_LIVRE, ID_UTILISATEUR)
             VALUES (?, ?)";
     $stmt = $this->pdo->prepare($sql);
     $result = $stmt->execute([
-      $this->id_livre->getId(),
-      $this->id_utilisateur->getId(),
+      $this->livre->getIdLivre(),
+      $this->utilisateur->getUserId(),
     ]);
 
     if ($result) {
-      $this->id_livre->setDisponibilite('Emprunté');
-      $this->id_livre->updateBook();
+      $this->livre->setDisponibilite('Emprunté');
+      $this->livre->updateBook();
     }
     return $result;
   }
   // Retour du Livre 
-  public function returnBook(): bool
+  public function registerReturn(): bool
   {
     $sql = "UPDATE Emprunt
             SET DATE_RETOUR = ?
@@ -75,18 +75,18 @@ class Emprunt
     $date_retour = new DateTimeImmutable();
     $result = $stmt->execute([
       $date_retour->format('Y-m-d'),
-      $this->id
+      $this->id_emprunt
     ]);
 
     if ($result) {
-      $this->id_livre->setDisponibilite('Disponible');
-      $this->id_livre->updateBook();
+      $this->livre->setDisponibilite('Disponible');
+      $this->livre->updateBook();
     }
 
     return $result;
   }
-  // Emprunts en Cours
-  public function loanInProgress(): bool
+  // Emprunt en Cours pour un utilisateur
+  public function isActive(): bool
   {
     $sql = "SELECT COUNT(*) FROM Emprunt
             WHERE ID_LIVRE = ?
@@ -94,8 +94,8 @@ class Emprunt
             AND DATE_RETOUR IS NULL";
     $stmt = $this->pdo->prepare($sql);
     $stmt->execute([
-      $this->id_livre->getId(),
-      $this->id_utilisateur->getId()
+      $this->livre->getIdLivre(),
+      $this->utilisateur->getUserId()
     ]);
     return $stmt->fetchColumn() > 0;
   }

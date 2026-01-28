@@ -16,12 +16,12 @@ class Categorie
   {
     return $this->id;
   }
-  public function getLibelleCategorie(): string
+  public function getLabel(): string
   {
     return $this->libelle_categorie;
   }
 
-  public function setLibelleCategorie($libelle_categorie): void
+  public function setLabel($libelle_categorie): void
   {
     $this->libelle_categorie = $libelle_categorie;
   }

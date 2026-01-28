@@ -12,7 +12,7 @@ class Commentaire
     }
 
     // Ajouter un commentaire
-    public function ajouter(int $idLivre, int $idUser, string $texte, int $note): bool
+    public function add(int $idLivre, int $idUser, string $texte, int $note): bool
     {
         $bulk = new \MongoDB\Driver\BulkWrite;
         $bulk->insert([
@@ -32,7 +32,7 @@ class Commentaire
     }
 
     // Récupérer les commentaires d'un livre
-    public function getCommentByLivre(int $idLivre): array
+    public function getCommentByBook(int $idLivre): array
     {
         $query = new \MongoDB\Driver\Query(['id_livre' => $idLivre]);
         $cursor = $this->manager->executeQuery($this->namespace, $query);

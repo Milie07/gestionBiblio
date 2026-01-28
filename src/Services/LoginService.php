@@ -55,13 +55,13 @@ class LoginService
   }
 
   // Créer une session utilisateur
-  private function createSession(int $id, string $pseudo): void
+  private function createSession(int $id_utilisateur, string $pseudo): void
   {
     if (session_status() === PHP_SESSION_NONE) {
       session_start();
     }
 
-    $_SESSION['id'] = $id;
+    $_SESSION['id_utilisateur'] = $id_utilisateur;
     $_SESSION['pseudo'] = $pseudo;
     $_SESSION['logged_in'] = true;
   }
@@ -72,7 +72,7 @@ class LoginService
     if (session_status() === PHP_SESSION_NONE) {
       session_start();
     }
-    return isset($_SESSION['id']) && $_SESSION['logged_in'] === true;
+    return isset($_SESSION['id_utilisateur']) && $_SESSION['logged_in'] === true;
   }
 
   // Récupérer l'Id de l'utilisateur connecté
@@ -81,7 +81,7 @@ class LoginService
     if (session_status() === PHP_SESSION_NONE) {
       session_start();
     }
-    return $_SESSION['id'] ?? null;
+    return $_SESSION['id_utilisateur'] ?? null;
   }
 
   //  Récupérer le pseudo de l'utilisateur connecté

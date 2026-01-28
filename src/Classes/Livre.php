@@ -6,26 +6,26 @@ use App\Classes\Categorie;
 
 class Livre
 {
-  private int $id;
+  private int $id_livre;
   private string $titre;
   private string $auteur;
-  private Categorie $id_categorie;
+  private Categorie $categorie;
   private string $disponibilite = "Disponible";
   private \PDO $pdo;
 
-  public function __construct($pdo, int $id, string $titre, string $auteur, Categorie $id_categorie, string $disponibilite = "Disponible")
+  public function __construct($pdo, int $id_livre, string $titre, string $auteur, Categorie $categorie, string $disponibilite = "Disponible")
   {
-    $this->id = $id;
+    $this->id_livre = $id_livre;
     $this->titre = $titre;
     $this->auteur = $auteur;
-    $this->id_categorie = $id_categorie;
+    $this->categorie = $categorie;
     $this->disponibilite = $disponibilite;
     $this->pdo = $pdo;
   }
   // Getters
-  public function getId(): int
+  public function getIdLivre(): int
   {
-    return $this->id;
+    return $this->id_livre;
   }
   public function getTitre(): string
   {
@@ -35,9 +35,9 @@ class Livre
   {
     return $this->auteur;
   }
-  public function getIdCategorie(): Categorie
+  public function getCategorie(): Categorie
   {
-    return $this->id_categorie;
+    return $this->categorie;
   }
   public function getDisponibilite(): string
   {
@@ -58,7 +58,7 @@ class Livre
   }
 
   // Méthode CRUD
-  public function registerBook(): bool
+  public function createBook(): bool
   {
     $sql = "INSERT INTO Livre (TITRE, AUTEUR, ID_CATEGORIE)
             VALUES (?, ?, ?)";
@@ -66,15 +66,17 @@ class Livre
     return $stmt->execute([
       $this->titre,
       $this->auteur,
-      $this->id_categorie->getId()
+      $this->categorie->getId()
     ]);
   }
+  // Supprimer un livre
   public function deleteBook(): bool
   {
     $sql = "DELETE FROM Livre WHERE ID_LIVRE = ?";
     $stmt = $this->pdo->prepare($sql);
-    return $stmt->execute([$this->id]);
+    return $stmt->execute([$this->id_livre]);
   }
+  // Mettre à jour les informations du livre
   public function updateBook(): bool
   {
     $sql = "UPDATE Livre
@@ -85,24 +87,25 @@ class Livre
       $this->titre,
       $this->auteur,
       $this->disponibilite,
-      $this->id
+      $this->id_livre
     ]);
   }
+  // Vérifier la disponibilité du livre
   public function isAvailable(): bool
   {
     return $this->disponibilite === 'Disponible';
   }
   // Méthode pour récupérer tous les livres
-  public static function getAllLivres($pdo): array
+  public static function getAllBooks($pdo): array
   {
     $stmt = $pdo->query("SELECT * FROM Livre");
     return $stmt->fetchAll();
   }
   // Méthode pour récupérer un livre par ID
-  public static function getLivreById($pdo, int $id): ?array
+  public static function getBookById($pdo, int $id_livre): ?array
   {
     $stmt = $pdo->prepare("SELECT * FROM Livre WHERE ID_LIVRE = ?");
-    $stmt->execute([$id]);
+    $stmt->execute([$id_livre]);
     return $stmt->fetch() ?: null;
   }
 }

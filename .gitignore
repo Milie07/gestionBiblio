@@ -1,6 +1,9 @@
 #Dépendances
 node_modules
 
+#PHPUnit
+vendor
+
 #Variables d'environnement
 .env
 
