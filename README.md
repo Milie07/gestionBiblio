@@ -48,7 +48,7 @@ Petit Projet d'étude pour la création, la connexion et l'utilisation de BDD SQ
   - `sudo pecl install mongodb`
   - Ajouter `extension=mongodb.so` dans `php.ini`
 
-## ⚙️ Configuration
+## Configuration
 
 ### Avec MAMP
 ```php
@@ -64,7 +64,7 @@ $host = 'localhost';
 $port = '3306';  // Port XAMPP par défaut
 ```
 
-## 🚀 Installation
+## Installation
 
 ### 1. Cloner le projet
 ```bash
@@ -113,3 +113,5 @@ start MongoDB
 - Modifier `$port` selon votre serveur :
    - MAMP : `8889`(par défaut)
    - XAMPP : `3306`
+
+## Déploiement
