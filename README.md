@@ -5,7 +5,6 @@ Petit Projet d'étude pour la création, la connexion et l'utilisation de BDD SQ
 ---
 
 ## Fonctionnalités
-
 - Recherche de livres par titre, auteur et catégorie
 - Visualisation du catalogue de livres
 - Visualisation d'un détail de livre
@@ -15,14 +14,15 @@ Petit Projet d'étude pour la création, la connexion et l'utilisation de BDD SQ
 - Possibilité de laisser un commentaire sur le livre
 
 ## Environnement de développement
-- **Serveur Local** : MAMP ou XAMPP
+- **Serveur Local** : MAMP, XAMPP ou Docker
   - Apache
   - MySQL
   - PHP 8.3
 - **IDE** : Visual Studio Code
+- **Tests** : PHPUnit 12.5, PHPStan 2.1
 
-## Bases de Données  
-- **MYSQL** : 8.0.44 
+## Bases de Données
+- **MYSQL** : 8.0.44
   - Port MAMP : 8889
   - Port XAMPP : 3306
 -> Gestion des entités Livre, Utilisateur, Emprunt, Catégorie.
@@ -40,7 +40,11 @@ Petit Projet d'étude pour la création, la connexion et l'utilisation de BDD SQ
 - Démarrer Apache et MySQL depuis le panneau de contrôle
 - MySQL sera sur le port **3306**
 
-**Pour les deux options :**
+**Option C : Avec Docker (Recommandé)**
+- [Télécharger Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- Aucune configuration manuelle requise (MySQL, MongoDB et PHP sont inclus)
+
+**Pour les options A et B :**
 - MongoDB installé
   - macOS : `brew install mongodb-community`
   - Windows : [Télécharger MongoDB](https://www.mongodb.com/try/download/community)
@@ -64,6 +68,13 @@ $host = 'localhost';
 $port = '3306';  // Port XAMPP par défaut
 ```
 
+### Avec Docker
+Les variables d'environnement sont configurées dans `docker-compose.yml` :
+- `DB_HOST=mysql`
+- `DB_PORT=3306`
+- `MONGO_HOST=mongodb`
+- `MONGO_PORT=27017`
+
 ## Installation
 
 ### 1. Cloner le projet
@@ -71,7 +82,25 @@ $port = '3306';  // Port XAMPP par défaut
 git clone [url-du-projet]
 ```
 
-### 2. Démarrer les serveurs
+### 2. Installer les dépendances
+```bash
+composer install
+```
+
+### 3. Démarrer les serveurs
+
+**Avec Docker (Recommandé) :**
+```bash
+docker-compose up -d
+```
+- Application : `http://localhost:8080`
+- MySQL : port `3307`
+- MongoDB : port `27018`
+
+Pour arrêter les conteneurs :
+```bash
+docker-compose down
+```
 
 **Avec MAMP :**
 - Ouvrir MAMP
@@ -84,7 +113,7 @@ git clone [url-du-projet]
 - Démarrer MySQL
 - Accéder à `http://localhost`
 
-### 3. Créer la base de données
+### 4. Créer la base de données
 
 **Via phpMyAdmin :**
 - MAMP : `http://localhost:8888/phpMyAdmin/`
@@ -99,7 +128,7 @@ mysql -u root -p < sql/schema.sql
 mysql -u root -p < sql/data.sql
 ```
 
-### 4. Démarrer MongoDB
+### 5. Démarrer MongoDB (MAMP/XAMPP uniquement)
 ```bash
 # macOS
 brew services start mongodb-community
@@ -108,10 +137,30 @@ brew services start mongodb-community
 start MongoDB
 ```
 
-### 5. Configuration
+### 6. Configuration
 - Copier `.env.example` vers `.env` et adapter les paramètres selon votre environnement.
 - Modifier `$port` selon votre serveur :
-   - MAMP : `8889`(par défaut)
+   - MAMP : `8889` (par défaut)
    - XAMPP : `3306`
+   - Docker : géré automatiquement
 
-## Déploiement
+## Tests
+
+### PHPUnit
+Lancer tous les tests unitaires :
+```bash
+./vendor/bin/phpunit
+```
+
+Lancer une suite de tests spécifique :
+```bash
+./vendor/bin/phpunit --testsuite Classes
+./vendor/bin/phpunit --testsuite Services
+```
+
+### PHPStan
+Analyse statique du code :
+```bash
+./vendor/bin/phpstan analyse src
+```
+
