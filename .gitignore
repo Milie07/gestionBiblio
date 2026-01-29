@@ -13,7 +13,7 @@ Thumbs.db
 .vscode
 
 #Docs divers
-logiqueMetier.txt
+docs/
 
 # sql
-biblio_app_sql.session.sql  
+*.session.sql  
